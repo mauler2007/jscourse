@@ -1,3 +1,4 @@
-console.log('123');
+'use strict'
 
 let a = 1;
+console.log(a);
