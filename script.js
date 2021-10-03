@@ -1,4 +1,11 @@
 'use strict'
 
-let a = 1;
-console.log(a);
+let title,
+  screens,
+  screenPrice,
+  rollback,
+  fullPrice,
+  adaptive;
+
+alert(title);
+console.log(screens);
