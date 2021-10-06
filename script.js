@@ -20,8 +20,7 @@ console.log('Стоимость разработки сайта ' + fullPrice + 
 let newArr = screens.toLowerCase().split(', ');
 // console.log(newArr);
 
-let backPercentage = fullPrice * (rollback / 100); //Процент отката посреднику за работу
-console.log('Процент отката посреднику за работу: ' + backPercentage);
+
 
 title = prompt('Как называется ваш проект?', 'projectName');
 
@@ -38,9 +37,12 @@ let service1 = prompt('Какой дополнительный тип услуг
 
 fullPrice = screenPrice + servicePrice1 + servicePrice2;
 
-let servicePercentPrice = fullPrice - backPercentage;
+let backPercentage = fullPrice * (rollback / 100); //Процент отката посреднику за работу
+console.log('Процент отката посреднику за работу: ' + backPercentage);
 
-console.log('Итоговая стоимость: ', Math.ceil(servicePercentPrice));
+let servicePercentPrice = Math.ceil(fullPrice - backPercentage);
+
+console.log('Итоговая стоимость: ', servicePercentPrice);
 
 switch (true) {
 
