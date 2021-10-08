@@ -1,26 +1,47 @@
 'use strict'
 
 let title = 'projectName',
-  screens = 'easy,  hard,  interactive',
+  screens = 'easy, hard, interactive',
   screenPrice = 1500,
   rollback = 10,
   fullPrice = 5020,
   adaptive = true;
 
-console.log('тип данных: ' + typeof (title));
-console.log('тип данных: ' + typeof (fullPrice));
-console.log('тип данных: ' + typeof (adaptive));
 
-console.log(screens.length);
-
-console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
-
-console.log('Стоимость разработки сайта ' + fullPrice + ' рублей');
 
 let newArr = screens.toLowerCase().split(', ');
 // console.log(newArr);
 
+// Функция возвращает сумму всех дополнительных услуг.
+let allServicePrices = function getAllServicePrices(a, b) {
+  return a + b;
+}
 
+// Функция возвращает сумму стоимости вёрстки и стоимости дополнительных услуг
+function getFullPrice(c, d) {
+  return c + d;
+}
+
+// Функция возвращает итоговую стоимость за вычетом процента отката.
+let servicePercentPrice = function getServicePercentPrices(a, b) {
+  return a - b;
+}
+
+function getTitle(str) {
+  str = ' КаЛьКулятор Верстки'
+
+  if (!str) return str;
+
+  let newArray = str.trim().toLowerCase().split('');
+  newArray[0] = 'K';
+  let newTitle = newArray.join('');
+  title = newTitle;
+  return title;
+}
+
+function showTypeOf(variable) {
+  console.log(typeof (variable));
+}
 
 title = prompt('Как называется ваш проект?', 'projectName');
 
@@ -38,11 +59,8 @@ let service1 = prompt('Какой дополнительный тип услуг
 fullPrice = screenPrice + servicePrice1 + servicePrice2;
 
 let backPercentage = fullPrice * (rollback / 100); //Процент отката посреднику за работу
-console.log('Процент отката посреднику за работу: ' + backPercentage);
 
-let servicePercentPrice = Math.ceil(fullPrice - backPercentage);
-
-console.log('Итоговая стоимость: ', servicePercentPrice);
+let allServicePercentPrice = Math.ceil(fullPrice - backPercentage);
 
 switch (true) {
 
@@ -62,3 +80,27 @@ switch (true) {
     console.log('то то пошло не так');
     break;
 }
+
+console.log('Новое название проекта: ', getTitle(title));
+
+console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
+
+console.log('Стоимость разработки сайта ' + fullPrice + ' рублей');
+
+console.log('сумма всех дополнительных услуг: ', allServicePrices(servicePrice1, servicePrice2));
+
+console.log('суммa стоимости верстки и стоимости дополнительных услуг: ', 
+
+getFullPrice(screenPrice, allServicePrices(servicePrice1, servicePrice2)));
+
+console.log('Процент отката посреднику за работу: ' + backPercentage);
+
+console.log('Итоговая стоимость: ', allServicePercentPrice);
+
+console.log('строкa из переменной screens в виде массива', screens.split(','));
+showTypeOf(title);
+showTypeOf(fullPrice);
+showTypeOf(adaptive);
+
+
+console.log('итоговая стоимость минус сумма отката', servicePercentPrice(allServicePercentPrice, backPercentage) )
