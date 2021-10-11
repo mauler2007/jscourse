@@ -7,45 +7,35 @@ let title = 'projectName',
   fullPrice = 5020,
   adaptive = true;
 
-
-
 let newArr = screens.toLowerCase().split(', ');
-// console.log(newArr);
 
 // Функция возвращает сумму всех дополнительных услуг.
-let allServicePrices = function getAllServicePrices(a, b) {
-  return a + b;
+let allServicePrices = function getAllServicePrices() {
+  return servicePrice1 + servicePrice2;
 }
 
 // Функция возвращает сумму стоимости вёрстки и стоимости дополнительных услуг
-function getFullPrice(c, d) {
-  return c + d;
+function getFullPrice() {
+  return screenPrice + allServicePrices();
 }
 
 // Функция возвращает итоговую стоимость за вычетом процента отката.
-let servicePercentPrice = function getServicePercentPrices(a, b) {
-  return a - b;
+let servicePercentPrice = function getServicePercentPrices() {
+  return allServicePercentPrice - backPercentage;
 }
 
-function getTitle(str) {
-  str = ' КаЛьКулятор Верстки'
-
-  if (!str) return str;
-
-  let newArray = str.trim().toLowerCase().split('');
-  newArray[0] = 'K';
-  let newTitle = newArray.join('');
-  title = newTitle;
-  return title;
+function getTitle() {
+  title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+  let resulttitle = title.toUpperCase().trim().substring(0, 1) + title.trim().toLowerCase().substring(1);
+  title = resulttitle
+  console.log(title);
 }
 
 function showTypeOf(variable) {
   console.log(typeof (variable));
 }
 
-title = prompt('Как называется ваш проект?', 'projectName');
-
-screens = prompt('Какие типы экранов нужно разработать?', 'desktop,tablet');
+screens = prompt('Какие типы экранов нужно разработать?', 'desktop,tablet').toLowerCase().split(',');
 
 screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
 
@@ -62,45 +52,53 @@ let backPercentage = fullPrice * (rollback / 100); //Процент отката
 
 let allServicePercentPrice = Math.ceil(fullPrice - backPercentage);
 
-switch (true) {
+function getRollbackMessage() {
 
-  case fullPrice >= 30000:
-    console.log('Даем скидку в 10%');
-    break;
+  switch (true) {
 
-  case fullPrice >= 15000:
-    console.log('Даем скидку в 5%');
-    break;
+    case fullPrice >= 30000:
+      console.log('Даем скидку в 10%');
+      break;
 
-  case fullPrice > 0:
-    console.log('Скидка не предусмотренa');
-    break;
+    case fullPrice >= 15000:
+      console.log('Даем скидку в 5%');
+      break;
 
-  case fullPrice <= 0:
-    console.log('то то пошло не так');
-    break;
+    case fullPrice > 0:
+      console.log('Скидка не предусмотренa');
+      break;
+
+    case fullPrice <= 0:
+      console.log('то то пошло не так');
+      break;
+  }
 }
 
-console.log('Новое название проекта: ', getTitle(title));
 
-console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
+getTitle();
 
-console.log('Стоимость разработки сайта ' + fullPrice + ' рублей');
+// console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
 
-console.log('сумма всех дополнительных услуг: ', allServicePrices(servicePrice1, servicePrice2));
+// console.log('Стоимость разработки сайта ' + fullPrice + ' рублей'); 
 
-console.log('суммa стоимости верстки и стоимости дополнительных услуг: ', 
+// console.log('сумма всех дополнительных услуг: ', allServicePrices());
 
-getFullPrice(screenPrice, allServicePrices(servicePrice1, servicePrice2)));
+// console.log('суммa стоимости верстки и стоимости дополнительных услуг: ',
 
-console.log('Процент отката посреднику за работу: ' + backPercentage);
+// getFullPrice());
 
-console.log('Итоговая стоимость: ', allServicePercentPrice);
+getRollbackMessage();
 
-console.log('строкa из переменной screens в виде массива', screens.split(','));
+
+// console.log('Процент отката посреднику за работу: ' + backPercentage);
+
+// console.log('Итоговая стоимость: ', allServicePercentPrice);
+
+console.log('строкa из переменной screens в виде массива', screens);
+
 showTypeOf(title);
 showTypeOf(fullPrice);
 showTypeOf(adaptive);
 
 
-console.log('итоговая стоимость минус сумма отката', servicePercentPrice(allServicePercentPrice, backPercentage) )
+console.log('итоговая стоимость минус сумма отката ', servicePercentPrice()); 
