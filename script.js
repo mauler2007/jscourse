@@ -23,7 +23,6 @@ function getFullPrice() {
 let getServicePercentPrices = function () {
   return allServicePercentPrice - backPercentage;
 }
-// console.log(" делаю , что говорит Руслан", servicePercentPrice);
 
 let servicePercentPrice = getServicePercentPrices();
 
