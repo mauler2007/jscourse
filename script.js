@@ -19,10 +19,13 @@ function getFullPrice() {
   return screenPrice + allServicePrices();
 }
 
+
 // Функция возвращает итоговую стоимость за вычетом процента отката.
-let servicePercentPrice = function getServicePercentPrices() {
+let getServicePercentPrices = function () {
   return allServicePercentPrice - backPercentage;
 }
+
+let servicePercentPrice = getServicePercentPrices();
 
 function getTitle() {
   title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
