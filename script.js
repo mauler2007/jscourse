@@ -12,10 +12,7 @@ let title = 'projectName',
   servicePrice2 = 0,
   servicePercentPrice = 0,
   backPercentage = 0,
-  allServicePrices = 0,
-
-  newArr = screens.toLowerCase().split(', ');
-
+  allServicePrices = 0;
 
 title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
 
@@ -95,7 +92,6 @@ fullPrice = getFullPrice();
 backPercentage = fullPrice * (rollback / 100); //Процент отката посреднику за работу
 
 servicePercentPrice = Math.ceil(fullPrice - backPercentage);
-
 
 // Почистить консоль логи и добавить недостающие, должны остаться:
 
