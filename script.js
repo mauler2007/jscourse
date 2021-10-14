@@ -1,91 +1,123 @@
 'use strict'
 
-
 let title = 'projectName',
-  screens = 'easy, hard, interactive',
-  screenPrice = 1500,
+  screens = 'easy,  hard,  interactive',
+  screenPrice = 5000,
   rollback = 10,
-  fullPrice = 5020,
-  adaptive = true;
+  fullPrice = 20000,
+  adaptive = true,
+  service1 = ' ',
+  service2 = '',
+  servicePrice1 = 0,
+  servicePrice2 = 0,
+  servicePercentPrice = 0,
+  backPercentage = 0,
+  allServicePrices = 0,
 
-// Функция возвращает сумму всех дополнительных услуг.
-let allServicePrices = function getAllServicePrices() {
-  return servicePrice1 + servicePrice2;
-}
-
-// Функция возвращает сумму стоимости вёрстки и стоимости дополнительных услуг
-function getFullPrice() {
-  return screenPrice + allServicePrices();
-}
+  newArr = screens.toLowerCase().split(', ');
 
 
-// Функция возвращает итоговую стоимость за вычетом процента отката.
-let getServicePercentPrices = function () {
-  return allServicePercentPrice - backPercentage;
-}
+title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
 
-let servicePercentPrice = getServicePercentPrices();
-
-function getTitle() {
-  title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
-  title = title.toUpperCase().trim().substring(0, 1) + title.trim().toLowerCase().substring(1);
-  return title;
-}
-
-console.log('Название проекта: ', getTitle());
-
-function showTypeOf(variable) {
-  console.log(typeof (variable));
-}
+screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile');
 
 screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
 
 adaptive = confirm('Нужен ли адаптив на сайте?');
 
-let service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO'),
+service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO'),
   servicePrice1 = +prompt('Сколько это будет стоить?', '1000'),
   service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM'),
   servicePrice2 = +prompt('Сколько это будет стоить?', '1000');
 
-let backPercentage = getFullPrice() * (rollback / 100); //Процент отката посреднику за работу
+//=======блок объявления функций-==-=======
 
-let allServicePercentPrice = Math.ceil(getFullPrice() - backPercentage);
+// Функция возвращает сумму всех дополнительных услуг.
+const getAllServicePrices = function () {
+  return servicePrice1 + servicePrice2;
+}
 
-function getRollbackMessage(price) {
+// Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
+function getFullPrice() {
+  return screenPrice + allServicePrices;
+}
+
+// Функция возвращает title меняя его таким образом:
+function getTitle() {
+  let title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+
+  title = title.trim();
+  title = title[0].toUpperCase() + title.slice(1).toLowerCase();
+  return title;
+}
+
+// Функция возвращает итоговую стоимость за вычетом процента отката.
+function getServicePercentPrices() {
+  return fullPrice - backPercentage;
+}
+
+// Функция  выводит в консоль - сообщение о скидке пользователю
+
+function getRollbackMessage(sum) {
 
   switch (true) {
 
-    case price >= 30000:
-      return 'Даем скидку в 10%';
+    case sum >= 30000:
+      console.log('Даем скидку в 10%');
       break;
 
-    case price >= 15000:
-      return 'Даем скидку в 5%';
+    case sum >= 15000:
+      console.log('Даем скидку в 5%');
       break;
 
-    case price > 0:
-      return 'Скидка не предусмотренa';
+    case sum > 0:
+      console.log('Скидка не предусмотренa');
       break;
 
-    case price <= 0:
-      return 'то то пошло не так';
+    case sum <= 0:
+      console.log('то то пошло не так');
       break;
   }
 }
 
-console.log('Итоговая стоимость минус сумма отката ', servicePercentPrice);
-// Выше Вывожу так как ты просил, хоть и не понятно воообще зачем нам сама функция , т.е. ее тело вместо  рассчитанного результата ?  Я   думал что нужна имеено цифра  - результат а он составлет 6664
+//=======блок  вычислений -==-=======
 
-console.log('Ваша скидка: ', getRollbackMessage(getFullPrice()));
+getRollbackMessage(fullPrice);
 
-console.log('Cтрокa из переменной screens в виде массива', screens);
+servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
 
-showTypeOf(title);
-showTypeOf(fullPrice);
-showTypeOf(adaptive);
+allServicePrices = getAllServicePrices();
+
+fullPrice = getFullPrice();
+
+// fullPrice = screenPrice + servicePrice1 + servicePrice2;
+
+backPercentage = fullPrice * (rollback / 100); //Процент отката посреднику за работу
+
+servicePercentPrice = Math.ceil(fullPrice - backPercentage);
 
 
+// Почистить консоль логи и добавить недостающие, должны остаться:
+
+console.log('тип данных: ' + title + ' ' + typeof (title));
+console.log('тип данных: ' + fullPrice + ' ' + typeof (fullPrice));
+console.log('тип данных: ' + adaptive + ' ' + typeof (adaptive));
+
+console.log('строкa из переменной screens в виде массива: ', screens.toLowerCase().split(', '));
+
+console.log('стоимость за вычетом процента отката посреднику: ', servicePercentPrice);
 
 
+// console.log('Процент отката посреднику за работу: ' + backPercentage);
 
+// console.log('длинна строки screens: ' + screens.length);
 
+// console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
+
+// console.log('Итоговая стоимость: ', servicePercentPrice);
+
+// console.log('Стоимость разработки сайта ' + fullPrice + ' рублей');
+
+// console.log('сумму всех дополнительных услуг: ', allServicePrices);
+
+// console.log('сумму стоимости верстки и стоимости доп. услуг: ', allServicePrices);
