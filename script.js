@@ -2,11 +2,11 @@
 
 let title = 'projectName',
   screens = 'easy,  hard,  interactive',
-  screenPrice = 5000,
+  screenPrice,
   rollback = 10,
   fullPrice = 20000,
   adaptive = true,
-  service1 = ' ',
+  service1 = '',
   service2 = '',
   servicePrice1 = 0,
   servicePrice2 = 0,
@@ -14,24 +14,52 @@ let title = 'projectName',
   backPercentage = 0,
   allServicePrices = 0;
 
-title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+// console.log(isNaN(2));
 
-screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile');
+const isNumber = function (num) {
+  return !isNaN(parseFloat(num) && isFinite(num));
+}
 
-screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
+const asking = function () {
+  title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
 
-adaptive = confirm('Нужен ли адаптив на сайте?');
+  screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile');
 
-service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO'),
-  servicePrice1 = +prompt('Сколько это будет стоить?', '1000'),
-  service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM'),
-  servicePrice2 = +prompt('Сколько это будет стоить?', '1000');
+  // screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
+
+  do {
+    screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
+  } while (!isNumber(screenPrice))
+
+  adaptive = confirm('Нужен ли адаптив на сайте?');
+}
+
 
 //=======блок объявления функций-==-=======
 
 // Функция возвращает сумму всех дополнительных услуг.
 const getAllServicePrices = function () {
-  return servicePrice1 + servicePrice2;
+  let sum;
+
+  for (let i = 0; i < 2; i++) {
+
+    if (i === 0) {
+      service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO');
+    } else if (i === 1) {
+      service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
+    }
+
+    do {
+      console.log(typeof (sum));
+      sum = +prompt('Сколько это будет стоить?', '1000');
+      console.log(sum);
+
+    } while (!isNumber(sum));
+
+    sum += sum;
+  }
+
+  return sum;
 }
 
 // Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
@@ -79,6 +107,9 @@ function getRollbackMessage(sum) {
 
 //=======блок  вычислений -==-=======
 
+asking();
+// title = getTitle();
+
 getRollbackMessage(fullPrice);
 
 servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
@@ -93,6 +124,7 @@ backPercentage = fullPrice * (rollback / 100); //Процент отката п�
 
 servicePercentPrice = Math.ceil(fullPrice - backPercentage);
 
+
 // Почистить консоль логи и добавить недостающие, должны остаться:
 
 console.log('тип данных: ' + title + ' ' + typeof (title));
@@ -103,17 +135,4 @@ console.log('строкa из переменной screens в виде масс�
 
 console.log('стоимость за вычетом процента отката посреднику: ', servicePercentPrice);
 
-
-// console.log('Процент отката посреднику за работу: ' + backPercentage);
-
-// console.log('длинна строки screens: ' + screens.length);
-
-// console.log('Стоимость верстки экранов ' + screenPrice + ' рублей');
-
-// console.log('Итоговая стоимость: ', servicePercentPrice);
-
-// console.log('Стоимость разработки сайта ' + fullPrice + ' рублей');
-
-// console.log('сумму всех дополнительных услуг: ', allServicePrices);
-
-// console.log('сумму стоимости верстки и стоимости доп. услуг: ', allServicePrices);
+console.log('allServicePrices -  сума доп услуг ', allServicePrices);
