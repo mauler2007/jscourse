@@ -2,15 +2,15 @@
 
 let title = 'projectName',
   screens = 'easy,  hard,  interactive',
-  screenPrice,
+  screenPrice = 0,
   rollback = 10,
   fullPrice = 20000,
   adaptive = true,
   service1 = '',
   service2 = '',
-  servicePrice,
+  servicePrice = 0,
   servicePercentPrice = 0,
-  backPercentage = 0,
+  // backPercentage = 0,
   allServicePrices = 0;
 
 // console.log(isNaN(2));
@@ -20,16 +20,14 @@ const isNumber = function (num) {
 }
 
 const asking = function () {
-  // title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+
   title = getTitle();
 
   screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile').toLowerCase().split(', ');
 
-  screenPrice = prompt('Сколько будет стоить данная работа', '6330');
-
-  while (!isNumber(screenPrice)) {
-    screenPrice = prompt('Сколько будет стоить данная работа', '6330');
-  }
+  do {
+    screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
+  } while (!isNumber(screenPrice))
 
   adaptive = confirm('Нужен ли адаптив на сайте?');
 }
@@ -48,11 +46,10 @@ const getAllServicePrices = function () {
     }
 
     do {
-      screenPrice = prompt('Сколько будет стоить данная работа?', '1000');
-    } while (!isNumber(screenPrice));
+      servicePrice  = +prompt('Сколько будет стоить данная работа?', '1000');
+    } while (!isNumber(servicePrice));
 
     sum += parseInt(servicePrice);
-    // console.log('type of data', typeof sum);
   }
 
   return sum;
@@ -81,19 +78,15 @@ function getServicePercentPrices() {
 function getRollbackMessage(sum) {
 
   switch (true) {
-
     case sum >= 30000:
       console.log('Даем скидку в 10%');
       break;
-
     case sum >= 15000:
       console.log('Даем скидку в 5%');
       break;
-
     case sum > 0:
       console.log('Скидка не предусмотренa');
       break;
-
     case sum <= 0:
       console.log('то то пошло не так');
       break;
@@ -103,19 +96,13 @@ function getRollbackMessage(sum) {
 //=======блок  вычислений -==-=======
 asking();
 // title = getTitle();
-
 getRollbackMessage(fullPrice);
-
-servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
 
 allServicePrices = getAllServicePrices();
 
 fullPrice = getFullPrice();
 
-// fullPrice = screenPrice + servicePrice1 + servicePrice2;
-
-
-// servicePercentPrice = Math.ceil(fullPrice - backPercentage);
+servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
 
 
 // Почистить консоль логи и добавить недостающие, должны остаться:
