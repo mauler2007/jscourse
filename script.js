@@ -1,78 +1,89 @@
 'use strict'
 
-let title = 'projectName',
-  screens = 'easy,  hard,  interactive',
-  screenPrice = 0,
-  rollback = 10,
-  fullPrice = 20000,
-  adaptive = true,
-  service1 = '',
-  service2 = '',
-  servicePrice = 0,
-  servicePercentPrice = 0,
-  // backPercentage = 0,
-  allServicePrices = 0;
+// let title = 'projectName',
+//   screens = 'easy,  hard,  interactive',
+//   screenPrice = 0,
+//   rollback = 10,
+//   fullPrice = 20000,
+//   adaptive = true,
+//   service1 = '',
+//   service2 = '',
+//   servicePrice = 0,
+//   servicePercentPrice = 0,
+//   // backPercentage = 0,
+//   allServicePrices = 0;
+const appData = {
+  title: 'projectName',
+  screens: 'easy,  hard,  interactive',
+  screenPrice: 0,
+  rollback: 10,
+    // Метод возвращает сумму стоимости верстки и стоимости дополнительных услуг
+  fullPrice: function () {
+    return appData.screenPrice + appData.allServicePrices;
+  },
+  adaptive: true,
+  servicePrice: 0,
+    // Метод возвращает итоговую стоимость за вычетом процента отката.
+  servicePercentPrice: function () {
+    return appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
+  },
+    // Метод возвращает сумму всех дополнительных услуг.
+  allServicePrices: function () {
 
-// console.log(isNaN(2));
+    let sum = 0;
+    for (let i = 0; i < 2; i++) {
 
-const isNumber = function (num) {
-  return !isNaN(parseFloat(num) && isFinite(num));
-}
+      if (i === 0) {
+        appData.service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO');
+      } else if (i === 1) {
+        appData.service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
+      }
 
-const asking = function () {
+      do {
+        appData.servicePrice = +prompt('Сколько будет стоить данная работа?', '1000');
+      } while (!appData.isNumber(appData.servicePrice));
 
-  title = getTitle();
-
-  screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile').toLowerCase().split(', ');
-
-  do {
-    screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
-  } while (!isNumber(screenPrice))
-
-  adaptive = confirm('Нужен ли адаптив на сайте?');
-}
-//=======блок объявления функций-==-=======
-
-// Функция возвращает сумму всех дополнительных услуг.
-const getAllServicePrices = function () {
-
-  let sum = 0;
-  for (let i = 0; i < 2; i++) {
-
-    if (i === 0) {
-      service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO');
-    } else if (i === 1) {
-      service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
+      sum += parseInt(appData.servicePrice);
     }
 
+    return sum;
+  },
+  service1: '',
+  service2: '',
+  asking: function () {
+
+     // Метод возвращает title меняя его таким образом:
+    appData.title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+
+    appData.title = appData.title.trim();
+    appData.title = appData.title[0].toUpperCase() + appData.title.slice(1).toLowerCase();
+    
+    appData.screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile').toLowerCase().split(', ');
+
     do {
-      servicePrice  = +prompt('Сколько будет стоить данная работа?', '1000');
-    } while (!isNumber(servicePrice));
+      appData.screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
+    } while (!appData.isNumber(appData.screenPrice))
 
-    sum += parseInt(servicePrice);
-  }
+    appData.adaptive = confirm('Нужен ли адаптив на сайте?');
+  },
+  isNumber: function (num) {
+    return !isNaN(parseFloat(num) && isFinite(num));
+  },
+  
+    
+  
 
-  return sum;
-};
-
-// Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
-function getFullPrice() {
-  return screenPrice + allServicePrices;
+  // backPercentage = 0,
 }
 
-// Функция возвращает title меняя его таким образом:
-function getTitle() {
-  let title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+//=======блок объявления функций-==-=======
 
-  title = title.trim();
-  title = title[0].toUpperCase() + title.slice(1).toLowerCase();
-  return title;
-}
 
-// Функция возвращает итоговую стоимость за вычетом процента отката.
-function getServicePercentPrices() {
-  return fullPrice - (fullPrice * (rollback / 100));
-}
+
+
+
+
+
 
 // Функция  выводит в консоль - сообщение о скидке пользователю
 function getRollbackMessage(sum) {
@@ -94,25 +105,25 @@ function getRollbackMessage(sum) {
 }
 
 //=======блок  вычислений -==-=======
-asking();
+appData.asking();
 // title = getTitle();
-getRollbackMessage(fullPrice);
+getRollbackMessage(appData.fullPrice);
 
-allServicePrices = getAllServicePrices();
+// appData.allServicePrices = appData.getAllServicePrices();
 
-fullPrice = getFullPrice();
+// appData.fullPrice = getFullPrice();
 
-servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
+// appData.servicePercentPrice = getServicePercentPrices(); //  итоговую стоимость
 
 
 // Почистить консоль логи и добавить недостающие, должны остаться:
 
-console.log('тип данных: ' + title + ' ' + typeof (title));
-console.log('тип данных: ' + fullPrice + ' ' + typeof (fullPrice));
-console.log('тип данных: ' + adaptive + ' ' + typeof (adaptive));
+// console.log('тип данных: ' + title + ' ' + typeof (title));
+// console.log('тип данных: ' + fullPrice + ' ' + typeof (fullPrice));
+// console.log('тип данных: ' + adaptive + ' ' + typeof (adaptive));
 
-console.log('строкa из переменной screens в виде массива: ', screens);
+console.log('строкa из переменной screens в виде массива: ', appData.screens);
 
-console.log('стоимость за вычетом процента отката посреднику: ', servicePercentPrice);
+console.log('стоимость за вычетом процента отката посреднику: ', appData.servicePercentPrice());
 
-console.log('allServicePrices -  сума доп услуг ', allServicePrices);
+console.log('allServicePrices -  сума доп услуг ', appData.allServicePrices());
