@@ -22,7 +22,7 @@ let appData = {
 
     do {
       appData.screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
-    } while (!isNumber(appData.screenPrice))
+    } while (!appData.isNumber(appData.screenPrice))
 
     appData.adaptive = confirm('Нужен ли адаптив на сайте?');
   },
@@ -30,7 +30,7 @@ let appData = {
     return !isNaN(parseFloat(num) && isFinite(num));
   },
   // Метод возвращает сумму всех дополнительных услуг.
-  getAllServicePrice: function () {
+  getAllServicePrices: function () {
 
     let sum = 0;
     for (let i = 0; i < 2; i++) {
@@ -43,7 +43,7 @@ let appData = {
 
       do {
         appData.servicePrice = +prompt('Сколько будет стоить данная работа?', '1000');
-      } while (!isNumber(appData.servicePrice));
+      } while (!appData.isNumber(appData.servicePrice));
 
       sum += parseInt(appData.servicePrice);
     }
@@ -85,13 +85,19 @@ let appData = {
   },
   start: function() {
     appData.asking();
+    appData.allServicePrices = appData.getAllServicePrices();
+    appData.fullPrice = appData.getFullPrice();
+    appData.servicePercentPrice = appData.getServicePercentPrices();
+    appData.title = appData.getTitle();
   },
   logger: function() {
-    
+    for(let key in appData) {
+      console.log(key + " " + appData[key]);
+    }
   }
-
 }
 
+appData.start();
 
 
 
