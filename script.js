@@ -13,12 +13,25 @@ let appData = {
   service1: '',
   service2: '',
   servicePrice: 0,
+  getNumberFormUser: function (message, defaultMessage) {
+    let number = 0;
+    do {
+      number = prompt(message, defaultMessage);
+    } while (!appData.isNumber(number))
+    return parseFloat(number);
+  },
 
   asking: function () {
 
-    appData.title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+    do {
+      appData.title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
+    } while (appData.title == null && appData.title !== String)
+    // } while (typeof (parseFloat(appData.title) === Number) && appData.title == null && appData.title !== String)
 
-    appData.screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile').toLowerCase().split(', ');
+    do {
+      appData.screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile')
+    } while (appData.screens == null && appData.screens !== String)
+    // console.log('split', appData.screens.toLowerCase().split(', '));
 
     do {
       appData.screenPrice = +prompt('Сколько будет стоить данная работа', '6330');
@@ -36,13 +49,20 @@ let appData = {
     for (let i = 0; i < 2; i++) {
 
       if (i === 0) {
-        appData.service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO');
+        
+        do {
+          appData.service1 = prompt('Какой дополнительный тип услуги нужен?', 'SEO');
+        } while (appData.isNumber(appData.service1));
+        
       } else if (i === 1) {
-        appData.service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
+
+        do {
+          appData.service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
+        } while (appData.isNumber(appData.service2));
       }
 
       do {
-        appData.servicePrice = +prompt('Сколько будет стоить данная работа?', '1000');
+        appData.getNumberFormUser('Сколько будет стоить данная работа?', '1000')
       } while (!appData.isNumber(appData.servicePrice));
 
       sum += parseInt(appData.servicePrice);
@@ -81,7 +101,7 @@ let appData = {
         break;
     }
   },
-  start: function() {
+  start: function () {
     appData.asking();
     appData.allServicePrices = appData.getAllServicePrices();
     appData.fullPrice = appData.getFullPrice();
@@ -89,9 +109,9 @@ let appData = {
     appData.title = appData.getTitle();
     appData.logger();
   },
-  
-  logger: function() {
-    for(let key in appData) {
+
+  logger: function () {
+    for (let key in appData) {
       console.log('свойство-' + key + " " + 'значение-' + appData[key]);
     }
   }
