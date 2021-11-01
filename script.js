@@ -22,15 +22,14 @@ let appData = {
   },
 
   asking: function () {
-
     do {
       appData.title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
-    } while (appData.title == null && appData.title !== String)
+    } while (appData.title == null || appData.isNumber(appData.title))
     // } while (typeof (parseFloat(appData.title) === Number) && appData.title == null && appData.title !== String)
 
     do {
       appData.screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile')
-    } while (appData.screens == null && appData.screens !== String)
+    } while (appData.screens == null || appData.isNumber(appData.screens))
     // console.log('split', appData.screens.toLowerCase().split(', '));
 
     do {
