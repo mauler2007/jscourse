@@ -13,13 +13,6 @@ let appData = {
   service1: '',
   service2: '',
   servicePrice: 0,
-  getNumberFormUser: function (message, defaultMessage) {
-    let number = 0;
-    do {
-      number = prompt(message, defaultMessage);
-    } while (!appData.isNumber(number))
-    return parseFloat(number);
-  },
 
   asking: function () {
     do {
@@ -59,12 +52,14 @@ let appData = {
           appData.service2 = prompt('Какой дополнительный тип услуги нужен?', 'SMM');
         } while (appData.isNumber(appData.service2));
       }
+      
 
       do {
-        appData.getNumberFormUser('Сколько будет стоить данная работа?', '1000')
-      } while (!appData.isNumber(appData.servicePrice));
+        appData.servicePrice = prompt('Сколько будет стоить данная работа?', '1000')
+      } while (!appData.isNumber(appData.servicePrice) || isNaN(appData.servicePrice));
 
       sum += parseInt(appData.servicePrice);
+      // sum += parseInt(appData.getNumberFormUser('Сколько будет стоить данная работа?', '1000'));
     }
 
     return sum;
