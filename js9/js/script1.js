@@ -1,30 +1,37 @@
 'use strict'
 
 // Получить заголовок "Калькулятор верстки"
-let listOfTitles = document.getElementsByTagName('h1');
+const listOfTitles = document.getElementsByTagName('h1');
 const title = listOfTitles[0];
-
+// console.log('заголовок', title);
 // Получить кнопки "Рассчитать" и "Сброс" через метод getElementsByClassName. HTMLCollection
 let buttons = document.getElementsByClassName('handler_btn');
+// console.log('кнопки', buttons);
 
 // Получить кнопку "+" под выпадающим списком через метод querySelector.
 const addScreenTypesBtn = document.querySelector('button.screen-btn');
+// console.log('кнопкa "+"', addScreenTypesBtn);
 
 // Получить все элементы с классом other - items
 let otherNumberItems = document.querySelectorAll('.other-items.number')
+// console.log('other-items + number', otherNumberItems);
 
 // Получить input type = range через его родителя с классом rollback
 const rangeInput = document.querySelector('.rollback [type="range"]')
+// console.log('input type=range', rangeInput);
 
 // Получить span с классом range - value через его родителя с классом rollback
 const rangeValue = document.querySelector('.rollback span')
+// console.log('span с классом range-value', rangeValue);
 
 // Получить все инпуты с классом total - input справа 
 // получить именно элементы
 const totalInputs = document.getElementsByClassName('total-input');
+// console.log('все инпуты с классом total - input', totalInputs);
 
 // Получить все блоки с классом screen в изменяемую переменную
 let screenBlocks = document.querySelectorAll('.screen');
+// console.log('Bсе блоки с классом screen', screenBlocks);
 
 let appData = {
   title: '',
@@ -44,6 +51,7 @@ let appData = {
     do {
       appData.title = prompt('Как называется ваш проект?', ' КаЛьКулятор Верстки');
     } while (appData.title == null || appData.isNumber(appData.title))
+    // } while (typeof (parseFloat(appData.title) === Number) && appData.title == null && appData.title !== String)
 
     do {
       appData.screens = prompt('Какие типы экранов нужно разработать?', 'desktop, tablet, mobile')
@@ -84,6 +92,7 @@ let appData = {
       } while (!appData.isNumber(appData.servicePrice) || isNaN(appData.servicePrice));
 
       sum += parseInt(appData.servicePrice);
+      // sum += parseInt(appData.getNumberFormUser('Сколько будет стоить данная работа?', '1000'));
     }
 
     return sum;
@@ -135,7 +144,7 @@ let appData = {
   }
 }
 
-// === блок  вычислений === 
+
 for (let i = 0; i < totalInputs.length; i++ ) {
   console.log(totalInputs[i]);
 }
