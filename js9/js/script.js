@@ -6,12 +6,16 @@ const title = listOfTitles[0];
 
 // Получить кнопки "Рассчитать" и "Сброс" через метод getElementsByClassName. HTMLCollection
 let buttons = document.getElementsByClassName('handler_btn');
+const sumButton = buttons[0];
+const resetButton = buttons[1];
 
 // Получить кнопку "+" под выпадающим списком через метод querySelector.
 const addScreenTypesBtn = document.querySelector('button.screen-btn');
 
-// Получить все элементы с классом other - items
+// Получить все элементы с классом other - items в две разные переменные
 let otherNumberItems = document.querySelectorAll('.other-items.number')
+
+let otherPercentItems = document.querySelectorAll('.other-items.number')
 
 // Получить input type = range через его родителя с классом rollback
 const rangeInput = document.querySelector('.rollback [type="range"]')
@@ -21,8 +25,13 @@ const rangeValue = document.querySelector('.rollback span')
 
 // Получить все инпуты с классом total - input справа 
 // получить именно элементы
-const totalInputs = document.getElementsByClassName('total-input');
+let totalInputs = document.getElementsByClassName('total-input');
 
+const total = totalInputs[0];
+const totalCountOther = totalInputs[1];
+const totalFullCount = totalInputs[2];
+const totalCountRollback = totalInputs[3];
+console.log(totalInputs);
 // Получить все блоки с классом screen в изменяемую переменную
 let screenBlocks = document.querySelectorAll('.screen');
 
