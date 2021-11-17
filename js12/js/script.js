@@ -28,10 +28,10 @@ const rangeValue = document.querySelector('.rollback span')
 let totalInputs = document.getElementsByClassName('total-input');
 
 const total = totalInputs[0];
-const totalCountOther = totalInputs[1];
-const totalFullCount = totalInputs[2];
-const totalCountRollback = totalInputs[3];
-// console.log(totalInputs);
+const totalCount = totalInputs[1];
+const totalCountOther = totalInputs[2];
+const fullTotalCount = totalInputs[3];
+const totalCountRollback = totalInputs[5];
 
 // Получить все блоки с классом screen в изменяемую переменную
 let screens = document.querySelectorAll('.screen');
@@ -58,21 +58,12 @@ let appData = {
     buttonPlus.addEventListener('click', appData.addScreenBlock);
   },
 
-  // Метод возвращает title меняя его таким образом:
-  // getTitle: function () {
-  //   appData.title = appData.title.trim();
-  //   appData.title = appData.title[0].toUpperCase() + appData.title.slice(1).toLowerCase();
-  //   return appData.title;
-  // },
-
   start: function () {
     appData.addScreens();
     appData.addServices();
 
     appData.addPrices();
-    // appData.allServicePrices = appData.getAllServicePrices();
-    // appData.servicePercentPrice = appData.getServicePercentPrices();
-    // appData.title = appData.getTitle();
+    // appData.getServicePercentPrice() 
 
     // appData.logger();
     console.log(appData);
@@ -80,7 +71,9 @@ let appData = {
   },
 
   showResult: function() {
-    
+    total.value = appData.screenPrice
+    totalCount.value = appData.sevicePricesPercent + appData.sevicePricesNumber
+    fullTotalCount.value = appData.fullPrice
   },
 
   // Метод заполняет свойсво  screens обьектами
