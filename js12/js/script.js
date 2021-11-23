@@ -38,8 +38,7 @@ let screens = document.querySelectorAll('.screen');
 let appData = {
   title: '',
   screens: [],
-  screensCount: [],  
-  totalScreens: 0, //сумма по типу экранов
+  totalScreens: 0, //общее количество типов экранов
   isError: false,
   screenPrice: 0,
   adaptive: true,
@@ -70,7 +69,6 @@ let appData = {
     appData.addScreens();
     appData.addServices();
     appData.addPrices();
-    appData.addNumberOfScreens();
     // appData.getServicePercentPrice() 
     // appData.logger();
     console.log(appData);
@@ -99,26 +97,11 @@ let appData = {
         startBtn.disabled = 'disabled';
       }
 
-      if(!appData.isError) {
-        // startBtn.setAttribute("disabled", false);
-        appData.start()
+      if(appData.isError) {
+        console.log('noerror')
       }
     })
-  },
-
-  // Метод заполняет свойсво  screensCount 
-  addNumberOfScreens: function () {
-    screens = document.querySelectorAll('.screen');
-
-    screens.forEach(function (currentCount, index) {
-      let inputValue = currentCount.querySelector('input[type=text]');
-
-      appData.screensCount.push({
-        totalScreen: inputValue.value,
-        id: index
-      })
-      // console.log('133=option=321' );
-    });
+    appData.start()
   },
 
   // Метод заполняет свойсво  screens обьектами
@@ -134,7 +117,8 @@ let appData = {
       appData.screens.push({
         id: index,
         name: selectName,
-        price: +select.value * +input.value
+        price: +select.value * +input.value,
+        count: +input.value,
       })
     });
   },
@@ -153,19 +137,13 @@ let appData = {
     }
 
       // Считаю количество экранов
-    for (let currentCount of appData.screensCount) {
-      appData.totalScreens += +currentCount.totalScreen
+    for (let screen of appData.screens) {
+      appData.totalScreens += +screen.count
     }
-
-    appData.totalScreens = appData.screensCount.reduce(function (sum, item) {
-      return +sum + +item.totalScreen
-    }, 0);
 
     appData.fullPrice = +appData.screenPrice + appData.sevicePricesNumber + appData.sevicePricesPercent
 
     appData.totalPlusRollback = appData.fullPrice + (appData.fullPrice * (appData.rollback / 100));
-
-    // appData.totalScreens 
   },
 
   logger: function () {
