@@ -42,8 +42,8 @@ let appData = {
   isError: false,
   screenPrice: 0,
   adaptive: true,
-  rollback: 10,
-  totalPlusRollback: 0,
+  rollback: 0,
+  totalMinusRollback: 0,
   sevicePricesPercent: 0,
   sevicePricesNumber: 0,
   fullPrice: 0,
@@ -55,21 +55,20 @@ let appData = {
   init: function () {
     appData.addTitle();
 
-    startBtn.addEventListener('click', appData.checkInputs);
+    startBtn.addEventListener('click', appData.addScreens);
     buttonPlus.addEventListener('click', appData.addScreenBlock);
     rangeInput.addEventListener('input', function () {
-    rangeValue.innerHTML = rangeInput.valueAsNumber
+      rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
       // значение rangeInput заноситься в свойство rollback нашего объекта для последующих расчетов!
-    appData.rollback = rangeInput.valueAsNumber
+      appData.rollback = rangeInput.valueAsNumber
 
     })
   },
 
   start: function () {
-    appData.addScreens();
+    // appData.addScreens();
     appData.addServices();
     appData.addPrices();
-    // appData.getServicePercentPrice() 
     // appData.logger();
     console.log(appData);
     appData.showResult();
@@ -80,29 +79,30 @@ let appData = {
     total.value = appData.screenPrice
     totalCountOther.value = appData.sevicePricesPercent + appData.sevicePricesNumber
     fullTotalCount.value = appData.fullPrice
-    totalCountRollback.value = appData.totalPlusRollback
+    totalCountRollback.value = appData.totalMinusRollback
     totalCount.value = appData.totalScreens
   },
   // Метод проверяет  на заполнение инпут и селект блоке 'Расчет по типу экрана' и запрещает кнопке запускать калькулятор
-  checkInputs: function () {
-    screens = document.querySelectorAll('.screen');
-    appData.isError = false;
+  // checkInputs: function () {
+  //   screens = document.querySelectorAll('.screen');
+  //   appData.isError = false;
 
-    screens.forEach(function (screen) {
-      let select = screen.querySelector('select');
-      let input = screen.querySelector('input[type=text]');
-      
-      if (select.selectedIndex == 0 || input.value == '') {
-        appData.isError = true;
-        startBtn.disabled = 'disabled';
-      }
+  //   screens.forEach(function (screen) {
+  //     let select = screen.querySelector('select');
+  //     let input = screen.querySelector('input[type=text]');
 
-      if(appData.isError) {
-        console.log('noerror')
-      }
-    })
-    appData.start()
-  },
+  //     // if (select.selectedIndex == 0 || input.value == '') {
+  //     //   appData.isError = true;
+  //     //   // startBtn.disabled = 'disabled';
+  //     // }
+  //     // // console.log(select.selectedIndex.)
+  //     // if(!appData.isError) {
+  //     //   appData.start()
+  //     // }
+  //     // console.log(appData.screens[0].price)
+
+  //   })
+  // },
 
   // Метод заполняет свойсво  screens обьектами
   addScreens: function () {
@@ -121,6 +121,20 @@ let appData = {
         count: +input.value,
       })
     });
+    // console.log('output', appData.screens[0].price)
+    // console.log('output', appData.screens[1].price)
+
+    for (let screen of appData.screens) {
+      if (screen.price == 0) {
+        appData.isError = true
+        // alert('need num')
+        // console.log('0')
+      } 
+    }
+
+    if (appData.isError == false) {
+      appData.start()
+    }
   },
 
   addPrices: function () {
@@ -136,14 +150,14 @@ let appData = {
       appData.sevicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100)
     }
 
-      // Считаю количество экранов
+    // Считаю количество экранов
     for (let screen of appData.screens) {
       appData.totalScreens += +screen.count
     }
 
     appData.fullPrice = +appData.screenPrice + appData.sevicePricesNumber + appData.sevicePricesPercent
 
-    appData.totalPlusRollback = appData.fullPrice + (appData.fullPrice * (appData.rollback / 100));
+    appData.totalMinusRollback = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
   },
 
   logger: function () {
