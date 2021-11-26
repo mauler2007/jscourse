@@ -70,7 +70,6 @@ let appData = {
     appData.addServices();
     appData.addPrices();
     // appData.logger();
-    console.log(appData);
     appData.showResult();
   },
 
@@ -82,27 +81,6 @@ let appData = {
     totalCountRollback.value = appData.totalMinusRollback
     totalCount.value = appData.totalScreens
   },
-  // Метод проверяет  на заполнение инпут и селект блоке 'Расчет по типу экрана' и запрещает кнопке запускать калькулятор
-  // checkInputs: function () {
-  //   screens = document.querySelectorAll('.screen');
-  //   appData.isError = false;
-
-  //   screens.forEach(function (screen) {
-  //     let select = screen.querySelector('select');
-  //     let input = screen.querySelector('input[type=text]');
-
-  //     // if (select.selectedIndex == 0 || input.value == '') {
-  //     //   appData.isError = true;
-  //     //   // startBtn.disabled = 'disabled';
-  //     // }
-  //     // // console.log(select.selectedIndex.)
-  //     // if(!appData.isError) {
-  //     //   appData.start()
-  //     // }
-  //     // console.log(appData.screens[0].price)
-
-  //   })
-  // },
 
   // Метод заполняет свойсво  screens обьектами
   addScreens: function () {
@@ -121,20 +99,20 @@ let appData = {
         count: +input.value,
       })
     });
-    // console.log('output', appData.screens[0].price)
-    // console.log('output', appData.screens[1].price)
 
     for (let screen of appData.screens) {
       if (screen.price == 0) {
         appData.isError = true
-        // alert('need num')
-        // console.log('0')
-      } 
+        alert('Заполните  тип и количество экранов')
+      } else {
+        appData.isError = false
+      }
     }
 
     if (appData.isError == false) {
       appData.start()
     }
+    console.dir(appData)
   },
 
   addPrices: function () {
