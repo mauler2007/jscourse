@@ -54,39 +54,40 @@ let appData = {
 
   init: function () {
     appData.addTitle();
-
-    startBtn.addEventListener('click', appData.addScreens);
-    buttonPlus.addEventListener('click', appData.addScreenBlock);
-    rangeInput.addEventListener('input', function () {
+    startBtn.addEventListener('click', this.addScreens);
+    buttonPlus.addEventListener('click', this.addScreenBlock);
+    rangeInput.addEventListener('input', () => {
       rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
       // значение rangeInput заноситься в свойство rollback нашего объекта для последующих расчетов!
-      appData.rollback = rangeInput.valueAsNumber
+      this.rollback = rangeInput.valueAsNumber
 
     })
   },
 
   start: function () {
     // appData.addScreens();
-    appData.addServices();
-    appData.addPrices();
+    this.addServices();
+    this.addPrices();
     // appData.logger();
-    appData.showResult();
+    this.showResult();
   },
 
   // Метод  выводит результаты на экран
   showResult: function () {
-    total.value = appData.screenPrice
-    totalCountOther.value = appData.sevicePricesPercent + appData.sevicePricesNumber
-    fullTotalCount.value = appData.fullPrice
-    totalCountRollback.value = appData.totalMinusRollback
-    totalCount.value = appData.totalScreens
+
+    total.value = this.screenPrice
+    totalCountOther.value = this.sevicePricesPercent + this.sevicePricesNumber
+    fullTotalCount.value = this.fullPrice
+    totalCountRollback.value = this.totalMinusRollback
+    totalCount.value = this.totalScreens
   },
 
   // Метод заполняет свойсво  screens обьектами
   addScreens: function () {
     screens = document.querySelectorAll('.screen');
+        console.log(this)
 
-    screens.forEach(function (screen, index) {
+    screens.forEach( (screen, index) => {
       let select = screen.querySelector('select');
       let input = screen.querySelector('input[type=text]');
       let selectName = select.options[select.selectedIndex].textContent
@@ -103,6 +104,8 @@ let appData = {
     for (let screen of appData.screens) {
       if (screen.price == 0) {
         appData.isError = true
+        // console.log(this.adaptive)
+
         alert('Заполните  тип и количество экранов')
       } else {
         appData.isError = false
@@ -116,26 +119,28 @@ let appData = {
   },
 
   addPrices: function () {
-    for (let screen of appData.screens) {
-      appData.screenPrice += +screen.price
+    // console.log(this)
+
+    for (let screen of this.screens) {
+      this.screenPrice += +screen.price
     }
 
-    for (let key in appData.servicesNumber) {
-      appData.sevicePricesNumber += appData.servicesNumber[key]
+    for (let key in this.servicesNumber) {
+      this.sevicePricesNumber += this.servicesNumber[key]
     }
 
-    for (let key in appData.servicesPercent) {
-      appData.sevicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100)
+    for (let key in this.servicesPercent) {
+      this.sevicePricesPercent += this.screenPrice * (this.servicesPercent[key] / 100)
     }
 
     // Считаю количество экранов
-    for (let screen of appData.screens) {
-      appData.totalScreens += +screen.count
+    for (let screen of this.screens) {
+      this.totalScreens += +screen.count
     }
 
-    appData.fullPrice = +appData.screenPrice + appData.sevicePricesNumber + appData.sevicePricesPercent
+    this.fullPrice = +this.screenPrice + this.sevicePricesNumber + this.sevicePricesPercent
 
-    appData.totalMinusRollback = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
+    this.totalMinusRollback = this.fullPrice - (this.fullPrice * (this.rollback / 100));
   },
 
   logger: function () {
@@ -145,23 +150,23 @@ let appData = {
   },
 
   addServices: function () {
-    otherItemsPercent.forEach(function (item) {
+    otherItemsPercent.forEach( (item) => {
       let check = item.querySelector('input[type=checkbox]');
       let label = item.querySelector('label');
       let input = item.querySelector('input[type=text]');
 
       if (check.checked) {
-        appData.servicesPercent[label.textContent] = +input.value
+        this.servicesPercent[label.textContent] = +input.value
       }
     })
 
-    otherItemsNumber.forEach(function (item) {
+    otherItemsNumber.forEach( (item) => {
       let check = item.querySelector('input[type=checkbox]');
       let label = item.querySelector('label');
       let input = item.querySelector('input[type=text]');
 
       if (check.checked) {
-        appData.servicesNumber[label.textContent] = +input.value
+        this.servicesNumber[label.textContent] = +input.value
       }
     })
   },
@@ -169,12 +174,13 @@ let appData = {
   addScreenBlock: function () {
     const cloneScreen = screens[0].cloneNode(true);
     screens[screens.length - 1].after(cloneScreen);
-    console.log('клонированная нода', cloneScreen);
+    // console.log('клонированная нода', cloneScreen);
   },
 
   addTitle: function () {
     document.title = `${title.textContent} + 1`;
   }
+
 }
 
 appData.init();
