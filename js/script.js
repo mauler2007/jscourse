@@ -35,6 +35,13 @@ const totalCountRollback = totalInputs[4];
 // Получить все блоки с классом screen в изменяемую переменную
 let screens = document.querySelectorAll('.screen');
 
+// все input[type = text] и select с левой стороны
+let elemsDisabled = document.querySelectorAll('.main-controls input[type=checkbox], .screen select[name="views-select"], .screen input[type="text"]')
+
+// function thisIs() {
+//   .bind()
+// }
+
 let appData = {
   title: '',
   screens: [],
@@ -53,19 +60,19 @@ let appData = {
   servicePrice: 0,
 
   init: function () {
-    appData.addTitle();
-    startBtn.addEventListener('click', this.addScreens);
-    buttonPlus.addEventListener('click', this.addScreenBlock);
+    this.addTitle();
+    startBtn.addEventListener('click', appData.addScreens);
+    buttonPlus.addEventListener('click', appData.addScreenBlock);
     rangeInput.addEventListener('input', () => {
       rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
-      // значение rangeInput заноситься в свойство rollback нашего объекта для последующих расчетов!
       this.rollback = rangeInput.valueAsNumber
-
     })
   },
 
   start: function () {
     // appData.addScreens();
+    this.blockingInputs();
+    this.changeBtns(resetBtn, startBtn); // показываю кнопку "ресет"б скрываю СТАРТ
     this.addServices();
     this.addPrices();
     // appData.logger();
@@ -74,7 +81,6 @@ let appData = {
 
   // Метод  выводит результаты на экран
   showResult: function () {
-
     total.value = this.screenPrice
     totalCountOther.value = this.sevicePricesPercent + this.sevicePricesNumber
     fullTotalCount.value = this.fullPrice
@@ -85,13 +91,13 @@ let appData = {
   // Метод заполняет свойсво  screens обьектами
   addScreens: function () {
     screens = document.querySelectorAll('.screen');
-        console.log(this)
+    console.log('this1', this)
 
-    screens.forEach( (screen, index) => {
+    screens.forEach((screen, index) => {
+
       let select = screen.querySelector('select');
       let input = screen.querySelector('input[type=text]');
       let selectName = select.options[select.selectedIndex].textContent
-      // console.dir(option);
 
       appData.screens.push({
         id: index,
@@ -104,8 +110,6 @@ let appData = {
     for (let screen of appData.screens) {
       if (screen.price == 0) {
         appData.isError = true
-        // console.log(this.adaptive)
-
         alert('Заполните  тип и количество экранов')
       } else {
         appData.isError = false
@@ -115,11 +119,47 @@ let appData = {
     if (appData.isError == false) {
       appData.start()
     }
-    console.dir(appData)
+    // console.dir(appData) 
+  },
+
+  // метод блокирует  все инпуты и селекты с левой стороны  после нажатия кнопки старт
+  blockingInputs: function () {
+    elemsDisabled = document.querySelectorAll('.main-controls input[type=checkbox], .screen select[name="views-select"], .screen input[type="text"]')
+    elemsDisabled.forEach(element => {
+      element.setAttribute("disabled", "disabled");
+    });
+  },
+
+  // blockingInputs: function () {
+  //   // console.log(123)
+  //   elemsDisabled.forEach(element => {
+  //     element.setAttribute("disabled", "disabled");
+  //   });
+  // },
+
+  changeBtns: function (show, hide) {
+    hide.style.display = 'none'
+    show.style.display = 'block'
+    // console.log('output')
+    show.addEventListener('click', appData.reset)
+  },
+
+  reset: function () {
+    // screens = 0
+
+    appData.changeBtns(startBtn, resetBtn)
+    elemsDisabled.forEach(element => {
+      element.removeAttribute("disabled");
+    });
+
+    while (appData.screens.length > 0) {
+      appData.screens.pop();
+    }
+
+    console.log(appData.screens)
   },
 
   addPrices: function () {
-    // console.log(this)
 
     for (let screen of this.screens) {
       this.screenPrice += +screen.price
@@ -150,7 +190,7 @@ let appData = {
   },
 
   addServices: function () {
-    otherItemsPercent.forEach( (item) => {
+    otherItemsPercent.forEach((item) => {
       let check = item.querySelector('input[type=checkbox]');
       let label = item.querySelector('label');
       let input = item.querySelector('input[type=text]');
@@ -160,7 +200,7 @@ let appData = {
       }
     })
 
-    otherItemsNumber.forEach( (item) => {
+    otherItemsNumber.forEach((item) => {
       let check = item.querySelector('input[type=checkbox]');
       let label = item.querySelector('label');
       let input = item.querySelector('input[type=text]');
@@ -180,10 +220,10 @@ let appData = {
   addTitle: function () {
     document.title = `${title.textContent} + 1`;
   }
-
 }
 
 appData.init();
+
 
 
 
