@@ -38,9 +38,17 @@ let screens = document.querySelectorAll('.screen');
 // все input[type = text] и select с левой стороны
 let elemsDisabled = document.querySelectorAll('.main-controls input[type=checkbox], .screen select[name="views-select"], .screen input[type="text"]')
 
-// function thisIs() {
-//   .bind()
-// }
+// let user = {
+//   firstName: "Вася",
+//   sayHi() {
+    
+//   }
+// };
+
+// let sayHi = this.addScreens.bind(this); // (*)
+
+
+
 
 let appData = {
   title: '',
@@ -61,7 +69,10 @@ let appData = {
 
   init: function () {
     this.addTitle();
-    startBtn.addEventListener('click', appData.addScreens);
+    startBtn.addEventListener('click', function() {
+      this.addScreens.bind(this)
+      appData.addScreens
+    } );
     buttonPlus.addEventListener('click', appData.addScreenBlock);
     rangeInput.addEventListener('input', () => {
       rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
@@ -223,7 +234,5 @@ let appData = {
 }
 
 appData.init();
-
-
 
 
