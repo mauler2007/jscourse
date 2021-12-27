@@ -25,7 +25,8 @@ const rangeValue = document.querySelector('.rollback span')
 // Получить все инпуты с классом total - input справа 
 // получить именно элементы
 let totalInputs = document.getElementsByClassName('total-input');
-
+let cleanTotalInputs = Array.from(totalInputs)
+// console.log(cleanTotalInputs)
 const total = totalInputs[0];
 const totalCount = totalInputs[1];
 const totalCountOther = totalInputs[2];
@@ -35,20 +36,13 @@ const totalCountRollback = totalInputs[4];
 // Получить все блоки с классом screen в изменяемую переменную
 let screens = document.querySelectorAll('.screen');
 
-// все input[type = text] и select с левой стороны
-let elemsDisabled = document.querySelectorAll('.main-controls input[type=checkbox], .screen select[name="views-select"], .screen input[type="text"]')
+// все input[type = text]  с левой стороны
+let elemsDisabledInput = document.querySelectorAll('.main-controls input[type=checkbox], .main-controls input, .screen input[type="text"]')
 
-// let user = {
-//   firstName: "Вася",
-//   sayHi() {
-    
-//   }
-// };
+//  и все select с левой стороны
+let elemsDisabledSelect = document.querySelectorAll('.screen select[name="views-select"]')
 
-// let sayHi = this.addScreens.bind(this); // (*)
-
-
-
+// console.log('elemsDisabledInput', elemsDisabledInput)
 
 let appData = {
   title: '',
@@ -69,11 +63,14 @@ let appData = {
 
   init: function () {
     this.addTitle();
-    startBtn.addEventListener('click', function() {
-      this.addScreens.bind(this)
-      appData.addScreens
-    } );
-    buttonPlus.addEventListener('click', appData.addScreenBlock);
+    startBtn.addEventListener('click', function () {
+      appData.addScreens.bind(appData)
+      appData.addScreens()
+    });
+    buttonPlus.addEventListener('click', function () {
+      appData.addScreenBlock.bind(appData)
+      appData.addScreenBlock()
+    });
     rangeInput.addEventListener('input', () => {
       rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
       this.rollback = rangeInput.valueAsNumber
@@ -102,7 +99,6 @@ let appData = {
   // Метод заполняет свойсво  screens обьектами
   addScreens: function () {
     screens = document.querySelectorAll('.screen');
-    console.log('this1', this)
 
     screens.forEach((screen, index) => {
 
@@ -110,7 +106,7 @@ let appData = {
       let input = screen.querySelector('input[type=text]');
       let selectName = select.options[select.selectedIndex].textContent
 
-      appData.screens.push({
+      this.screens.push({
         id: index,
         name: selectName,
         price: +select.value * +input.value,
@@ -118,56 +114,105 @@ let appData = {
       })
     });
 
-    for (let screen of appData.screens) {
+    for (let screen of this.screens) {
       if (screen.price == 0) {
-        appData.isError = true
+        this.isError = true
         alert('Заполните  тип и количество экранов')
       } else {
-        appData.isError = false
+        this.isError = false
       }
     }
 
-    if (appData.isError == false) {
-      appData.start()
+    if (this.isError == false) {
+      this.start()
     }
-    // console.dir(appData) 
+  },
+
+  removeScreenBlocks: function () {
+    // document.querySelectorAll('.screen').forEach(el => el.remove());
+    let screens = document.querySelectorAll('.screen');
+    // console.log('screens', screens)
+
+    screens.forEach((element, idx) => {
+      if (idx > 0) element.remove()
+    });
   },
 
   // метод блокирует  все инпуты и селекты с левой стороны  после нажатия кнопки старт
   blockingInputs: function () {
-    elemsDisabled = document.querySelectorAll('.main-controls input[type=checkbox], .screen select[name="views-select"], .screen input[type="text"]')
-    elemsDisabled.forEach(element => {
+    elemsDisabledInput = document.querySelectorAll('.main-controls input[type=checkbox], .screen input[type="text"]')
+
+    elemsDisabledInput.forEach(element => {
+      element.setAttribute("disabled", "disabled");
+    });
+
+    elemsDisabledSelect = document.querySelectorAll('.screen select[name="views-select"]')
+
+    elemsDisabledSelect.forEach(element => {
       element.setAttribute("disabled", "disabled");
     });
   },
 
-  // blockingInputs: function () {
-  //   // console.log(123)
-  //   elemsDisabled.forEach(element => {
-  //     element.setAttribute("disabled", "disabled");
-  //   });
-  // },
-
   changeBtns: function (show, hide) {
     hide.style.display = 'none'
     show.style.display = 'block'
-    // console.log('output')
-    show.addEventListener('click', appData.reset)
+    show.addEventListener('click', function () {
+      appData.changeBtns.bind(appData)
+      appData.reset()
+    })
+  },
+
+  cleanAllInputs: function () {
+    let select = document.querySelector('select[name=views-select]');
+    select.value = ''
+    // console.log('select', select)
+
+
+    otherItemsPercent.forEach((item) => {
+      let check = item.querySelector('input[type=checkbox]');
+
+      if (check.checked) {
+        check.checked = false
+      }
+    })
+
+    otherItemsNumber.forEach((item) => {
+      let check = item.querySelector('input[type=checkbox]');
+
+      if (check.checked) {
+        check.checked = false
+      }
+    })
+    // console.log('out', cleanTotalInputs)
+
+    cleanTotalInputs.forEach((element, index) => {
+      cleanTotalInputs[index].value = ''
+    });
+
+      // let selects = element.querySelectorAll('.views-select')
+    
+    rangeInput.value = '0'
+    rangeValue.innerHTML = rangeInput.valueAsNumber + '%'
+    elemsDisabledInput[0].value = null
+    // elemsDisabledInput[0].removeAttribute('value')
   },
 
   reset: function () {
     // screens = 0
+    this.changeBtns(startBtn, resetBtn)
 
-    appData.changeBtns(startBtn, resetBtn)
-    elemsDisabled.forEach(element => {
+    elemsDisabledInput.forEach(element => {
       element.removeAttribute("disabled");
     });
 
-    while (appData.screens.length > 0) {
-      appData.screens.pop();
-    }
+    elemsDisabledSelect.forEach(element => {
+      element.removeAttribute("disabled");
+    });
 
-    console.log(appData.screens)
+    // console.log(this.servicesNumber[0])
+    this.cleanAllInputs()
+    this.removeScreenBlocks()
+
   },
 
   addPrices: function () {
@@ -223,6 +268,7 @@ let appData = {
   },
 
   addScreenBlock: function () {
+    // console.log(this) ====================================
     const cloneScreen = screens[0].cloneNode(true);
     screens[screens.length - 1].after(cloneScreen);
     // console.log('клонированная нода', cloneScreen);
@@ -234,5 +280,6 @@ let appData = {
 }
 
 appData.init();
+// appData.removeScreenBlocks();
 
 
